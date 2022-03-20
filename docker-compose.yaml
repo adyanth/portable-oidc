@@ -14,14 +14,15 @@ services:
       - 8080:8080
       - 8443:8443
     volumes:
-      - ./traefik.yml:/etc/traefik/traefik.yml
-      - ./dynamic:/etc/traefik/dynamic/
+      - ./configs/traefik.yml:/etc/traefik/traefik.yml
+      - ./configs/dynamic:/etc/traefik/dynamic/
       - ./certs:/etc/traefik/certs/
 
   oidc:
     image: thomseddon/traefik-forward-auth:2
     restart: unless-stopped
     env_file:
-      - oidc.env
+      - ./configs/oidc.env
+      - ./configs/oidc.secret.env
     expose:
       - 4181
