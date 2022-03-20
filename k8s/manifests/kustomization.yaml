@@ -1,0 +1,10 @@
+commonLabels:
+  stack: portable-oidc
+
+resources:
+  - app.deployment.yaml
+  - app.service.yaml
+  - oidc.deployment.yaml
+  - oidc.service.yaml
+  - traefik.deployment.yaml
+  - traefik.service.yaml

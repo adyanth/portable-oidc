@@ -1,0 +1,16 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: traefik
+spec:
+  template:
+    spec:
+      volumes:
+        - name: certs
+          secret:
+            name: traefik-certs
+      containers:
+        - name: traefik
+          volumeMounts:
+            - mountPath: /etc/traefik/certs/
+              name: certs

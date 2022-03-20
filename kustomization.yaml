@@ -1,0 +1,32 @@
+namespace: default
+
+resources:
+  - k8s/manifests
+  - k8s/patches/traefik.ingress.yaml
+patchesStrategicMerge:
+  - k8s/patches/traefik-nodeport.service.yaml
+  # - k8s/patches/traefik-certs.deployment.yaml
+
+secretGenerator:
+  - name: oidc
+    envs:
+      - configs/oidc.secret.env
+  # - name: traefik-certs
+  #   files:
+  #     - certs/tls.crt
+  #     - certs/tls.key
+
+configMapGenerator:
+  - name: oidc
+    envs:
+      - configs/oidc.env
+  - name: traefik-static
+    files:
+      - configs/traefik.yml
+  - name: traefik-dynamic
+    files:
+      - configs/dynamic/config.yaml
+# images:
+#   - name: containous/whoami
+#     newName: nginx
+#     newTag: latest
