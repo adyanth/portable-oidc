@@ -1,0 +1,46 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: traefik
+spec:
+  selector:
+    matchLabels:
+      app: traefik
+  template:
+    metadata:
+      labels:
+        app: traefik
+    spec:
+      volumes:
+        - name: static-config
+          configMap:
+            name: traefik-static
+        - name: dynamic-config
+          configMap:
+            name: traefik-dynamic
+        # - name: certs
+        #   secret:
+        #     name: traefik-certs
+      containers:
+        - name: traefik
+          image: traefik:2.6
+          resources:
+            requests:
+              memory: "16Mi"
+              cpu: "10m"
+            limits:
+              memory: "64Mi"
+              cpu: "50m"
+          ports:
+            - containerPort: 8080
+              name: http
+            - containerPort: 8443
+              name: https
+          volumeMounts:
+            - mountPath: /etc/traefik/traefik.yml
+              name: static-config
+              subPath: traefik.yml
+            - mountPath: /etc/traefik/dynamic/
+              name: dynamic-config
+            # - mountPath: /etc/traefik/certs/
+            #   name: certs

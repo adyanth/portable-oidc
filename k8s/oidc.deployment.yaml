@@ -1,0 +1,31 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: oidc
+spec:
+  selector:
+    matchLabels:
+      app: oidc
+  template:
+    metadata:
+      labels:
+        app: oidc
+    spec:
+      containers:
+        - name: oidc
+          image: thomseddon/traefik-forward-auth:2
+          resources:
+            requests:
+              memory: "16Mi"
+              cpu: "10m"
+            limits:
+              memory: "64Mi"
+              cpu: "50m"
+          ports:
+            - containerPort: 4181
+              name: auth
+          envFrom:
+            - secretRef:
+                name: oidc
+            - configMapRef:
+                name: oidc

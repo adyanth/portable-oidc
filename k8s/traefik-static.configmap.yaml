@@ -1,0 +1,26 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: traefik-static
+data:
+  traefik.yml: |
+    entrypoints:
+      web:
+        address: :8080
+        forwardedHeaders:
+          insecure: true
+        http:
+          middlewares:
+            - oidc@file
+      websecure:
+        address: :8443
+        forwardedHeaders:
+          insecure: true
+        http:
+          middlewares:
+            - oidc@file
+
+    providers:
+      file:
+        watch: true
+        directory: /etc/traefik/dynamic

@@ -1,0 +1,11 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: oidc
+spec:
+  selector:
+    app: oidc
+  ports:
+    - name: auth
+      port: 4181
+      targetPort: auth
