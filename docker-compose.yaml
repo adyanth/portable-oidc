@@ -1,0 +1,27 @@
+version: "3"
+
+services:
+  app:
+    image: containous/whoami:latest
+    restart: unless-stopped
+    expose:
+      - 80
+
+  traefik:
+    image: traefik:2.6
+    restart: unless-stopped
+    ports:
+      - 8080:8080
+      - 8443:8443
+    volumes:
+      - ./docker/traefik.yml:/etc/traefik/traefik.yml
+      - ./docker/dynamic:/etc/traefik/dynamic/
+      - ./docker/certs:/etc/traefik/certs/
+
+  oidc:
+    image: thomseddon/traefik-forward-auth:2
+    restart: unless-stopped
+    env_file:
+      - docker/oidc.env
+    expose:
+      - 4181

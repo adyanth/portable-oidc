@@ -1,0 +1,27 @@
+# tls:
+#   stores:
+#     default:
+#       defaultCertificate:
+#         certFile: /etc/traefik/certs/tls.crt
+#         keyFile: /etc/traefik/certs/tls.key
+
+http:
+  middlewares:
+    oidc:
+      forwardauth:
+        address: http://oidc:4181
+        authResponseHeaders: X-Forwarded-User
+        trustForwardHeader: true
+  routers:
+    app:
+      rule: PathPrefix(`/`)
+      service: app
+    app-tls:
+      rule: PathPrefix(`/`)
+      service: app
+      tls: {}
+  services:
+    app:
+      loadBalancer:
+        servers:
+          - url: http://app # Set the port if the app does not listen on 80
